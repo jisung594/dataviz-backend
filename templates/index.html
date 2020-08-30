@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>data viz</title>
+    <link href="{{ url_for('static', filename='CSS/index.css') }}" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="page">
+
+      <div class="main">
+
+          <div class="header">
+            <h3>data viz</h3>
+          </div>
+
+          <div>
+            <form id="upload-form" action="/" method="POST" enctype="multipart/form-data">
+              <input type="text" name="bucket-dir" placeholder="Bucket Directory" required="required"><br>
+              <input type="file" name="input-file" id="input-btn">
+
+              <br/>
+
+              <select name="format" form="data-format" required>
+                <option value="" disabled selected>Format</option>
+                <option value="csv">CSV</option>
+                <option value="json">JSON</option>
+                <option value="xlsx">XLSX</option>
+              </select>
+
+              <br/>
+
+              <input id="submit" type="submit" placeholder="Submit"><br>
+            </form>
+          </div>
+
+      </div>
+
+    </div>
+  </body>
+</html>
