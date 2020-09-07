@@ -11,12 +11,12 @@ app.config.from_object("config")
 
 
 
-@app.route('/')
-def index():
-    return render_template('/index.html')
+# @app.route('/')
+# def index():
+#     return render_template('/index.html')
 
 
-@app.route('/', methods=['POST'])
+@app.route('/upload', methods=['POST'])
 def upload_file():
     if "input-file" not in request.files:
         return "Please upload a file."
