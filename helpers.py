@@ -5,7 +5,7 @@ from .__init__ import app
 import pymsgbox
 
 
-ALLOWED_EXTENSIONS = set(['txt', 'csv', 'json', 'xls'])
+ALLOWED_EXTENSIONS = set(['txt', 'csv', 'json', 'xls', 'jpg', 'png', 'pdf'])
 
 def allowed_file(name):
     return "." in name and name.split(".")[1].lower() in ALLOWED_EXTENSIONS
@@ -29,9 +29,8 @@ def upload_to_s3(file, bucket, bucket_dir, acl='private'):
                 "ContentType": file.content_type
             }
         )
-
     except Exception as e:
         print("Something Happened: ", e)
         return e
 
-    pymsgbox.alert("Uploaded to {}/{}/{}".format(app.config["S3_LOCATION"], bucket_dir, file.filename), "Success")
+    # pymsgbox.alert("Uploaded to {}/{}/{}".format(app.config["S3_LOCATION"], bucket_dir, file.filename), "Success")
