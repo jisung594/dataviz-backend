@@ -1,7 +1,7 @@
 import boto3, botocore
 from .config import S3_KEY, S3_SECRET, S3_BUCKET
 from botocore.config import Config
-from .__init__ import app
+# from .__init__ import app
 import pymsgbox
 
 

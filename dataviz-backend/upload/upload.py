@@ -1,24 +1,20 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, Blueprint, render_template, request, redirect
+from flask import current_app as app
 from werkzeug.utils import secure_filename
-from .helpers import *
+from ..helpers import *
 from flask_cors import CORS
+from ..config import S3_KEY, S3_SECRET, S3_BUCKET
 
-app = Flask(__name__)
-# -- in terminal --
-# source venv/bin/activate
-# export FLASK_APP=__init__.py
-# python -m flask run
+# Blueprint config
+upload_bp = Blueprint(
+    'upload_bp', __name__
+)
 
-app.config.from_object("config")
-CORS(app)
-
-
-@app.route("/")
+@upload_bp.route("/")
 def index():
     return render_template("/index.html")
 
-
-@app.route("/upload", methods=["POST"])
+@upload_bp.route("/upload", methods=["POST"])
 def upload():
     bucket_dir = request.form["bucketDir"]
     format = request.form["format"]
@@ -29,11 +25,9 @@ def upload():
 
     if input_file and allowed_file(input_file.filename):
         input_file.filename = secure_filename(input_file.filename)
-        output = upload_to_s3(input_file, app.config["S3_BUCKET"], bucket_dir)
+        # output = upload_to_s3(input_file, app.config["S3_BUCKET"], bucket_dir)
+        output = upload_to_s3(input_file, S3_BUCKET, bucket_dir)
         return str(output)
     else:
+        print("Check if 'input_file' is valid or the file name passes 'allowed_file' func")
         return redirect("/")
-
-
-if __name__ == "__main__":
-    app.run(Debug=True)

@@ -1,0 +1,3 @@
+graft dataviz-backend/templates
+graft dataviz-backend/static
+include dataviz-backend/schema.sql
