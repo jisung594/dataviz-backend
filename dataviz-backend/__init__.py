@@ -18,12 +18,12 @@ def create_app():
         from .upload import upload
         app.register_blueprint(upload.upload_bp)
 
+
     # register the database commands
     from . import db
     db.init_app(app)
 
     return app
-
 
 
 if __name__ == "__main__":

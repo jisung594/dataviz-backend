@@ -2,8 +2,8 @@ from flask import Flask, Blueprint, render_template, request, redirect
 from flask import current_app as app
 from werkzeug.utils import secure_filename
 from ..helpers import *
-from flask_cors import CORS
 from ..config import S3_KEY, S3_SECRET, S3_BUCKET
+from flask_cors import CORS
 
 # Blueprint config
 upload_bp = Blueprint(

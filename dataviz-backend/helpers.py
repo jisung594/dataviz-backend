@@ -5,7 +5,7 @@ from botocore.config import Config
 import pymsgbox
 
 
-ALLOWED_EXTENSIONS = set(['txt', 'csv', 'json', 'xls', 'jpg', 'png', 'pdf'])
+ALLOWED_EXTENSIONS = set(['txt', 'csv', 'json', 'xls', 'jpg', 'jpeg', 'png', 'pdf'])
 
 def allowed_file(name):
     return "." in name and name.split(".")[1].lower() in ALLOWED_EXTENSIONS
