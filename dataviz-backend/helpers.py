@@ -34,3 +34,16 @@ def upload_to_s3(file, bucket, bucket_dir, acl='private'):
         return e
 
     # pymsgbox.alert("Uploaded to {}/{}/{}".format(app.config["S3_LOCATION"], bucket_dir, file.filename), "Success")
+
+
+# --------------------------------------------
+def read_from_s3(bucket, bucket_dir, acl='private'):
+    try:
+        # change Prefix param w/ the variable for a user's username
+        for key in s3.list_objects(Bucket=bucket, Prefix='Jon')['Contents']:
+            print(key['Key'])
+
+    except Exception as e:
+        print("Something Happened: ", e)
+        return e
+# --------------------------------------------

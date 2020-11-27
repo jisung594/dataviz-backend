@@ -6,7 +6,7 @@ import os
 # source venv/bin/activate
 # export FLASK_APP=__init__.py
 # export FLASK_ENV=development
-# python -m flask run
+# flask run ( OR python -m flask run )
 
 
 def create_app():
