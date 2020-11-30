@@ -2,8 +2,8 @@ from flask import Flask, Blueprint, render_template, request, redirect
 from flask import current_app as app
 from werkzeug.utils import secure_filename
 from ..helpers import *
-from ..config import S3_KEY, S3_SECRET, S3_BUCKET
-from flask_cors import CORS
+from ..config import S3_BUCKET
+# from flask_cors import CORS
 
 # Blueprint config
 upload_bp = Blueprint(
@@ -31,11 +31,3 @@ def upload():
     else:
         print("Check if 'input_file' is valid or the file name passes 'allowed_file' func")
         return redirect('/')
-
-# --------------------------------------------
-@upload_bp.route('/list_objs', methods=['GET'])
-def list():
-    bucket_dir = 'Jon'
-    output = read_from_s3(S3_BUCKET, bucket_dir)
-    return str(output)
-# --------------------------------------------

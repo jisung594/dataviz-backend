@@ -17,6 +17,8 @@ def create_app():
     with app.app_context():
         from .upload import upload
         app.register_blueprint(upload.upload_bp)
+        from .retrieve import retrieve
+        app.register_blueprint(retrieve.retrieve_bp)
 
 
     # register the database commands
