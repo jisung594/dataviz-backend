@@ -50,7 +50,7 @@ def read_s3_dir(bucket, bucket_dir, acl='private'):
         # *** 'bucket_dir' should be a logged-in username ***
         for key in s3.list_objects(Bucket=bucket, Prefix=bucket_dir)['Contents']:
             file_name = key['Key'].split('/')[1]
-            if file_name is not '':
+            if file_name != '':
                 files['files'].append(file_name)
                 print(file_name)
             else:

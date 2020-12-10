@@ -15,6 +15,8 @@ def create_app():
     app.config.from_pyfile("config.py")
 
     with app.app_context():
+        from .auth import auth
+        app.register_blueprint(auth.retrieve_bp)
         from .upload import upload
         app.register_blueprint(upload.upload_bp)
         from .retrieve import retrieve

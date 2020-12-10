@@ -3,6 +3,14 @@ import click
 from flask import current_app, g
 from flask.cli import with_appcontext
 
+# ------ view tables in Sqlite3 ------
+# .open /Users/jonathanchoi/Documents/CODE/dataviz-backend/dataviz-backend/dataviz-backend.db
+# .tables
+#
+# (any changes to schemas require 'flask init_db' for updating in db)
+# -------------------------------
+
+
 def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect(
