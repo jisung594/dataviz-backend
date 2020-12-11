@@ -6,7 +6,7 @@ from flask.cli import with_appcontext
 # ------ view tables in Sqlite3 ------
 # .open /Users/jonathanchoi/Documents/CODE/dataviz-backend/dataviz-backend/dataviz-backend.db
 # .tables
-#
+# .schema <table_name>
 # (any changes to schemas require 'flask init_db' for updating in db)
 # -------------------------------
 

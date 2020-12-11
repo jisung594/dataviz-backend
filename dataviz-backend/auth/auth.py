@@ -1,8 +1,9 @@
-from flask import Flask, Blueprint, render_template, request, redirect
+from flask import Flask, Blueprint, flash, request, redirect, url_for
 from flask import current_app as app
-from werkzeug.utils import secure_filename
+from werkzeug.security import check_password_hash, generate_password_hash
 from ..helpers import *
 from ..config import S3_KEY, S3_SECRET, S3_BUCKET
+from ..db import get_db
 from flask_cors import CORS
 
 # Blueprint config
@@ -22,25 +23,22 @@ def register():
         db = get_db()
         error = None
 
-        if email and password:
-            db.execute(
-                'SELECT id FROM user WHERE email = ? OR username = ?',
-            (email,username,)  # and/or USERNAME ------------------
-            ).fetchone() is not None:
+        if db.execute(
+            'SELECT id FROM user WHERE email = ?', (email,)
+        ).fetchone() is not None:
                 error = '{} is already registered.'.format(email)
 
         if error is None:
             db.execute(
                 """
-                INSERT INTO user (username, first_name, last_name, email, password)
+                INSERT OR IGNORE INTO user (username, first_name, last_name, email, password)
                 VALUES (?,?,?,?,?)
                 """,
                 # use JTW tokens instead ------------
                 (username, first_name, last_name, email, generate_password_hash(password))
             )
             db.commit()
-            return redirect(url_for('auth.login'))
 
-        flask(error)
+        # flash(error)
 
-    # return render_template('auth/register.html')
+    return error

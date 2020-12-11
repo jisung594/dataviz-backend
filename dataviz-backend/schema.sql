@@ -5,5 +5,6 @@ CREATE TABLE user (
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
   username TEXT UNIQUE NOT NULL,
+  email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL
 );
