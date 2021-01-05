@@ -19,9 +19,6 @@ def upload():
     bucket_dir = request.form['bucketDir']
     format = request.form['format']
     input_file = request.files['inputFile']
-    # graph_name = request.form['graph-name']
-    # x_axis = request.form['x-axis']
-    # y_axis = request.form['y-axis']
 
     if input_file and allowed_file(input_file.filename):
         input_file.filename = secure_filename(input_file.filename)

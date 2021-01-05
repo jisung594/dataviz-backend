@@ -21,24 +21,46 @@ def register():
         password = request.form['password']
 
         db = get_db()
-        error = None
+        # status = None
+        res = None
 
+        # ****** EXISTING USER ******
         if db.execute(
             'SELECT id FROM user WHERE email = ?', (email,)
         ).fetchone() is not None:
-                error = '{} is already registered.'.format(email)
+            row = db.execute('SELECT id FROM user WHERE email = ?', (email,)).fetchone()
+            res = {'status':'existing', 'id':row[0]}
 
-        if error is None:
+        # if db.execute(
+        #     'SELECT id FROM user WHERE email = ?', (email,)
+        # ).fetchone() is not None:
+        #         status = str(db.execute(
+        #         'SELECT id FROM user WHERE email = ?', (email,)
+        #         ).fetchone())
+        #         # status = 'false'
+
+
+        # ****** NEW USER ******
+        if res is None:
             db.execute(
                 """
                 INSERT OR IGNORE INTO user (username, first_name, last_name, email, password)
                 VALUES (?,?,?,?,?)
                 """,
-                # use JTW tokens instead ------------
+                # use JTW tokens as well ------------
                 (username, first_name, last_name, email, generate_password_hash(password))
             )
             db.commit()
+            row = db.execute('SELECT id FROM user WHERE email = ?', (email,)).fetchone()
+            res = {'status':'new', 'id':row[0]}
+            # status = 'true'
 
-        # flash(error)
+        # ------------------------------------------------
+        # -- when the email is ALREADY registered, it correctly sends back response
+        #    (HOWEVER, even unregistered emails sent to frontend as ALREADY REGISTERED)
+        # -- when the email is NOT registered
+        # ------------------------------------------------
 
-    return error
+
+        # flash(status)
+        return res
