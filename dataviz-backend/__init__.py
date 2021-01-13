@@ -2,10 +2,12 @@ from flask import Flask
 from flask_cors import CORS
 import os
 
-# -- in terminal --
+# -- in terminal --------------------------------------
+# source venv/bin/activate && export FLASK_APP=__init__.py && export FLASK_ENV=development
+# flask run
+# -----------------------------------------------------
 # source venv/bin/activate
-# export FLASK_APP=__init__.py
-# export FLASK_ENV=development
+# export FLASK_APP=__init__.py && export FLASK_ENV=development
 # flask run ( OR python -m flask run )
 
 
