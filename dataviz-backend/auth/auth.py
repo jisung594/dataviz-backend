@@ -1,11 +1,13 @@
-from flask import Flask, Blueprint, flash, request, redirect, url_for
+from flask import Flask, Blueprint, flash, request, redirect, session
 from flask import current_app as app
 from werkzeug.security import check_password_hash, generate_password_hash
 from ..helpers import *
 from ..config import S3_KEY, S3_SECRET, S3_BUCKET
 from ..db import get_db
 from flask_cors import CORS
-import flask_praetorian
+# import flask_praetorian
+
+from flask_sqlalchemy import SQLAlchemy
 
 
 # Blueprint config
@@ -24,7 +26,7 @@ def register():
         db = get_db()
         res = None
 
-        # ****** EXISTING USER ******
+        # ***************** EXISTING USER *****************
         if db.execute(
             'SELECT id FROM user WHERE email = ?', (email,)
         ).fetchone() is not None:
@@ -32,16 +34,16 @@ def register():
             res = {'status':'existing', 'id':row[0]}
 
 
-        # ****** NEW USER ******
+        # ***************** NEW USER *****************
         if res is None:
             db.execute(
                 """
                 INSERT OR IGNORE INTO user (first_name, last_name, email, password)
                 VALUES (?,?,?,?)
                 """,
-                # use JTW tokens as well ------------
                 (first_name, last_name, email, generate_password_hash(password))
             )
+
             db.commit()
             row = db.execute('SELECT id FROM user WHERE email = ?', (email,)).fetchone()
             res = {
@@ -54,7 +56,6 @@ def register():
                 }
             }
 
-        # flash(status)
         return res
 
 
@@ -65,17 +66,32 @@ def login():
         password = request.form['password']
 
         db = get_db()
-        guard = flask_praetorian.Praetorian()  # ******************************
+        # guard = flask_praetorian.Praetorian()  # ******************************
 
         res = None
 
-        if db.execute(
-            'SELECT id FROM user WHERE email = ?', (email,)
-        ).fetchone() is not None:
-            # ****** CHECK PASSWORD ******
-            # row = db.execute('SELECT id FROM user WHERE email = ?', (email)).fetchall()
+        user = db.execute(
+            'SELECT * FROM user WHERE email = ?', (email,)
+        ).fetchone()
 
-            user = guard.authenticate(email,password)
-            res = {'access_token': guard.encode_jwt_token(user)}
+        if user is None or not check_password_hash(user['password'], password):
+            res = {
+                'error': 'Username or password is incorrect.',
+                'user': None
+            }
+
+        if res is None:
+            session.clear()
+            session['user_id'] = user['id']
+
+            res = {
+                'error': 'None',
+                'user': {
+                    'id': user['id'],
+                    'first_name': user['first_name'],
+                    'last_name': user['last_name'],
+                    'email': user['email']
+                }
+            }
 
         return res
