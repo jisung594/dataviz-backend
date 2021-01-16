@@ -52,9 +52,9 @@ def read_s3_dir(bucket, bucket_dir, acl='private'):
             file_name = key['Key'].split('/')[1]
             if file_name != '':
                 files['files'].append(file_name)
-                print(file_name)
-            else:
-                print('*** placeholder for bucket directory ***')
+                # print(file_name)
+            # else:
+            #     print('*** placeholder for bucket directory ***')
 
         return files
 

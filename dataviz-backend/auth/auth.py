@@ -56,11 +56,17 @@ def register():
                 }
             }
 
+            # ---------------------------------------------
+            session.clear()
+            session['user_id'] = user[row[0]]
+            # ---------------------------------------------
+
         return res
 
 
 @auth_bp.route('/login', methods=['GET','POST'])
 def login():
+    # Log in user and create session
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -94,4 +100,23 @@ def login():
                 }
             }
 
+        print(session)
         return res
+
+    # Check if user is logged in
+    if request.method == 'GET':
+        if session.get('user_id') is None:
+            return {'user_id': None}
+
+        return {'user_id': session['user_id']}
+
+        print(session)
+
+
+@auth_bp.route('/logout', methods=['GET','POST'])
+def logout():
+    if request.method == 'POST':
+        # session.clear()
+        session.pop('user_id', None)
+        print(session)
+        return {'user_id': None}
