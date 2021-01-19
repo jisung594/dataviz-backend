@@ -1,13 +1,12 @@
 from flask import Flask, Blueprint, flash, request, redirect, session
-from flask import current_app as app
+# from flask import current_app as app
 from werkzeug.security import check_password_hash, generate_password_hash
 from ..helpers import *
 from ..config import S3_KEY, S3_SECRET, S3_BUCKET
 from ..db import get_db
 from flask_cors import CORS
 # import flask_praetorian
-
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 
 
 # Blueprint config
@@ -34,7 +33,7 @@ def register():
             res = {'status':'existing', 'id':row[0]}
 
 
-        # ***************** NEW USER *****************
+        # ***************** NEW USER **********************
         if res is None:
             db.execute(
                 """
@@ -55,11 +54,6 @@ def register():
                     'email': email
                 }
             }
-
-            # ---------------------------------------------
-            session.clear()
-            session['user_id'] = user[row[0]]
-            # ---------------------------------------------
 
         return res
 
@@ -100,17 +94,17 @@ def login():
                 }
             }
 
-        print(session)
+        # print(session)
         return res
 
     # Check if user is logged in
     if request.method == 'GET':
         if session.get('user_id') is None:
             return {'user_id': None}
+        else:
+            return {'user_id': session['user_id']}
+            # print(session)
 
-        return {'user_id': session['user_id']}
-
-        print(session)
 
 
 @auth_bp.route('/logout', methods=['GET','POST'])

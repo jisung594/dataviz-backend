@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 import os
+from flask_login import LoginManager
 
 # -- in terminal --------------------------------------
 # source venv/bin/activate && export FLASK_APP=__init__.py && export FLASK_ENV=development
@@ -15,6 +16,9 @@ def create_app():
     app = Flask(__name__, instance_relative_config=False)
     CORS(app)
     app.config.from_pyfile("config.py")
+
+    login_manager = LoginManager(app)     #----------------------
+    login_manager.init_app(app)   #----------------------
 
     with app.app_context():
         from .auth import auth
